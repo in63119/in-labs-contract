@@ -4,7 +4,7 @@ import {resolve} from "path";
 
 dotenv.config({path: resolve(process.cwd(), ".env")});
 
-type Env = "dev" | "prod";
+type Env = "local" | "prod";
 
 export const getNetwork = () => {
   if (network.name === "hardhat") {
@@ -14,4 +14,4 @@ export const getNetwork = () => {
   }
 };
 
-export const getEnv = (): Env => (process.env.ENV === "prod" ? "prod" : "dev");
+export const getEnv = (): Env => (process.env.ENV === "prod" ? "prod" : "local");

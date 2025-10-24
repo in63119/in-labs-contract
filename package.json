@@ -2,7 +2,11 @@
   "name": "in-labs-contract",
   "version": "1.0.0",
   "scripts": {
-    "format": "prettier --write \"**/*.{sol,ts,tsx,js,jsx,json,md}\""
+    "compile": "npx hardhat compile",
+    "deploy": "cross-env ENV=local npx hardhat run --network kaia_test",
+    "deploy:prod": "cross-env ENV=prod npx hardhat run --network kaia_test",
+    "test": "npx hardhat test",
+    "upgrade": "npx hardhat run --network kaia_test"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
@@ -30,6 +34,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.4.0",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "minimatch": "^9"
   }

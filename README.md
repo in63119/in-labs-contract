@@ -1,13 +1,13 @@
-# Sample Hardhat Project
+# In-Labs Contracts
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+### 배포 방법
 
-Try running some of the following tasks:
+ex) `PasskeyStorage` 컨트랙트 배포
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+- `yarn deploy scripts/PasskeyStorage.deploy.ts`
+
+### 컨트랙트 구조
+
+#### 인증 컨트랙트
+
+- PasskeyStorage: 사용자들의 Passkey

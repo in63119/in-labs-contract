@@ -37,7 +37,7 @@ export const makeAbi = async (
   contract: string,
   address: string | ethers.Addressable,
   departure: string,
-  env?: "dev" | "prod",
+  env?: "local" | "prod",
 ) => {
   const {network, chainEnv} = getNetwork();
   const destination = env
