@@ -15,7 +15,7 @@ contract PasskeyStorage is ERC721URIStorage, Ownable {
 
     constructor() ERC721("PasskeyStorage", "PASSKEY") Ownable(msg.sender) {}
 
-    function mintPasskey(address recipient, string memory uri) public onlyOwner returns (uint256) {
+    function registerPasskey(address recipient, string memory uri) public onlyOwner returns (uint256) {
         uint256 tokenId = ++_nextTokenId;
 
         _safeMint(recipient, tokenId);
@@ -31,11 +31,9 @@ contract PasskeyStorage is ERC721URIStorage, Ownable {
         _burn(tokenId);
     }
 
-    function getOwnerTokens(address owner)
-        external
-        view
-        returns (uint256[] memory tokenIds, string[] memory tokenURIs)
-    {
+    function getOwnerTokens(
+        address owner
+    ) external view returns (uint256[] memory tokenIds, string[] memory tokenURIs) {
         uint256 length = _ownedTokenIds[owner].length();
         tokenIds = new uint256[](length);
         tokenURIs = new string[](length);
