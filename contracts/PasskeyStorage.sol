@@ -31,17 +31,13 @@ contract PasskeyStorage is ERC721URIStorage, Ownable {
         _burn(tokenId);
     }
 
-    function getOwnerPasskeys(
-        address owner
-    ) external view returns (uint256[] memory tokenIds, string[] memory tokenURIs) {
+    function getPasskeys(address owner) external view returns (string[] memory passkeyURIs) {
         uint256 length = _ownedTokenIds[owner].length();
-        tokenIds = new uint256[](length);
-        tokenURIs = new string[](length);
+        passkeyURIs = new string[](length);
 
         for (uint256 i = 0; i < length; i++) {
             uint256 tokenId = _ownedTokenIds[owner].at(i);
-            tokenIds[i] = tokenId;
-            tokenURIs[i] = tokenURI(tokenId);
+            passkeyURIs[i] = tokenURI(tokenId);
         }
     }
 

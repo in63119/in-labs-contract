@@ -147,11 +147,8 @@
     },
     {
       "inputs": [{"internalType": "address", "name": "owner", "type": "address"}],
-      "name": "getOwnerPasskeys",
-      "outputs": [
-        {"internalType": "uint256[]", "name": "tokenIds", "type": "uint256[]"},
-        {"internalType": "string[]", "name": "tokenURIs", "type": "string[]"}
-      ],
+      "name": "getPasskeys",
+      "outputs": [{"internalType": "string[]", "name": "passkeyURIs", "type": "string[]"}],
       "stateMutability": "view",
       "type": "function"
     },
@@ -276,5 +273,5 @@
       "type": "function"
     }
   ],
-  "address": "0xFe1A87a7AcF11EB9623ab556434a7e6856A0D51C"
+  "address": "0x4E57129Fd7fa46697EAcBcf88e347Ed704DD0b90"
 }
