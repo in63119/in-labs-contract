@@ -27,5 +27,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          npm install -g aws-cli
           aws s3 sync ./abis s3://in-labs/abis --region $AWS_REGION
