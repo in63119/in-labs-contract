@@ -11,3 +11,7 @@ ex) `PasskeyStorage` 컨트랙트 배포
 #### 인증 컨트랙트
 
 - PasskeyStorage: 사용자들의 Passkey
+
+#### 게시물 컨트랙트
+
+- PostStorage: 사용자들의 Post
