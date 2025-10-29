@@ -132,7 +132,7 @@
       "type": "function"
     },
     {
-      "inputs": [{"internalType": "uint256", "name": "tokenId", "type": "uint256"}],
+      "inputs": [{"internalType": "uint256", "name": "postId", "type": "uint256"}],
       "name": "burn",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -148,7 +148,17 @@
     {
       "inputs": [{"internalType": "address", "name": "owner", "type": "address"}],
       "name": "getPosts",
-      "outputs": [{"internalType": "string[]", "name": "postURIs", "type": "string[]"}],
+      "outputs": [
+        {
+          "components": [
+            {"internalType": "uint256", "name": "id", "type": "uint256"},
+            {"internalType": "string", "name": "uri", "type": "string"}
+          ],
+          "internalType": "struct PostStorage.Post[]",
+          "name": "posts",
+          "type": "tuple[]"
+        }
+      ],
       "stateMutability": "view",
       "type": "function"
     },
@@ -191,6 +201,13 @@
       "name": "post",
       "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{"internalType": "uint256", "name": "postId", "type": "uint256"}],
+      "name": "postURI",
+      "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -273,5 +290,5 @@
       "type": "function"
     }
   ],
-  "address": "0xc38AC8dE4C4Ad565fc47F8deF73De06F8fD0611A"
+  "address": "0x32755C49a5DF6d83F9a4a5a2a870C453F48ED9aE"
 }

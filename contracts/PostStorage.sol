@@ -9,42 +9,47 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 contract PostStorage is ERC721URIStorage, Ownable {
     using EnumerableSet for EnumerableSet.UintSet;
 
-    uint256 private _nextTokenId;
-    mapping(address => EnumerableSet.UintSet) private _ownedTokenIds;
-    mapping(uint256 => string) private _tokenURIs;
+    uint256 private _nextPostId;
+    mapping(address => EnumerableSet.UintSet) private _ownedPostIds;
+    mapping(uint256 => string) private _postURIs;
+
+    struct Post {
+        uint256 id;
+        string uri;
+    }
 
     constructor() ERC721("PostStorage", "POST") Ownable(msg.sender) {}
 
     function post(address recipient, string memory uri) public onlyOwner returns (uint256) {
-        uint256 tokenId = ++_nextTokenId;
+        uint256 postId = ++_nextPostId;
 
-        _safeMint(recipient, tokenId);
-        _setTokenURI(tokenId, uri);
+        _safeMint(recipient, postId);
+        _setTokenURI(postId, uri);
 
-        return tokenId;
+        return postId;
     }
 
-    function burn(uint256 tokenId) external {
-        address owner = ownerOf(tokenId);
-        _checkAuthorized(owner, _msgSender(), tokenId);
+    function burn(uint256 postId) external {
+        address owner = ownerOf(postId);
+        _checkAuthorized(owner, _msgSender(), postId);
 
-        _burn(tokenId);
+        _burn(postId);
     }
 
-    function getPosts(address owner) external view returns (string[] memory postURIs) {
-        uint256 length = _ownedTokenIds[owner].length();
-        postURIs = new string[](length);
+    function getPosts(address owner) external view returns (Post[] memory posts) {
+        uint256 length = _ownedPostIds[owner].length();
+        posts = new Post[](length);
 
         for (uint256 i = 0; i < length; i++) {
-            uint256 tokenId = _ownedTokenIds[owner].at(i);
-            postURIs[i] = tokenURI(tokenId);
+            uint256 postId = _ownedPostIds[owner].at(i);
+            posts[i] = Post({id: postId, uri: postURI(postId)});
         }
     }
 
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        _requireOwned(tokenId);
+    function postURI(uint256 postId) public view returns (string memory) {
+        _requireOwned(postId);
 
-        string memory storedTokenURI = _tokenURIs[tokenId];
+        string memory storedTokenURI = _postURIs[postId];
         string memory base = _baseURI();
 
         if (bytes(base).length == 0) {
@@ -54,27 +59,27 @@ contract PostStorage is ERC721URIStorage, Ownable {
             return string.concat(base, storedTokenURI);
         }
 
-        return super.tokenURI(tokenId);
+        return super.tokenURI(postId);
     }
 
     function _update(address to, uint256 tokenId, address auth) internal override returns (address) {
         address from = super._update(to, tokenId, auth);
 
         if (from != address(0)) {
-            _ownedTokenIds[from].remove(tokenId);
+            _ownedPostIds[from].remove(tokenId);
         }
 
         if (to != address(0)) {
-            _ownedTokenIds[to].add(tokenId);
+            _ownedPostIds[to].add(tokenId);
         } else {
-            delete _tokenURIs[tokenId];
+            delete _postURIs[tokenId];
         }
 
         return from;
     }
 
     function _setTokenURI(uint256 tokenId, string memory newTokenURI) internal override {
-        _tokenURIs[tokenId] = newTokenURI;
-        emit MetadataUpdate(tokenId);
+        super._setTokenURI(tokenId, newTokenURI);
+        _postURIs[tokenId] = newTokenURI;
     }
 }
