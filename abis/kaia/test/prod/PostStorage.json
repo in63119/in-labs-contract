@@ -1,6 +1,10 @@
 {
   "abi": [
-    {"inputs": [], "stateMutability": "nonpayable", "type": "constructor"},
+    {
+      "inputs": [{"internalType": "address", "name": "_trustedForwarder", "type": "address"}],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
     {
       "inputs": [
         {"internalType": "address", "name": "sender", "type": "address"},
@@ -173,6 +177,13 @@
       "type": "function"
     },
     {
+      "inputs": [{"internalType": "address", "name": "forwarder", "type": "address"}],
+      "name": "isTrustedForwarder",
+      "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "name",
       "outputs": [{"internalType": "string", "name": "", "type": "string"}],
@@ -288,7 +299,14 @@
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "trustedForwarder",
+      "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+      "stateMutability": "view",
+      "type": "function"
     }
   ],
-  "address": "0x3baE540B063DD03c37f0878A74a7bAB06F708493"
+  "address": "0x6354657973CefaC9FD3897a79340BE81A4913fc7"
 }
