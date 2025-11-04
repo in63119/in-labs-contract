@@ -5,8 +5,9 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
-contract PostStorage is ERC721URIStorage, Ownable {
+contract PostStorage is ERC721URIStorage, Ownable, ERC2771Context {
     using EnumerableSet for EnumerableSet.UintSet;
 
     uint256 private _nextPostId;
@@ -18,7 +19,9 @@ contract PostStorage is ERC721URIStorage, Ownable {
         string uri;
     }
 
-    constructor() ERC721("PostStorage", "POST") Ownable(msg.sender) {}
+    constructor(
+        address _trustedForwarder
+    ) ERC721("PostStorage", "POST") Ownable(msg.sender) ERC2771Context(_trustedForwarder) {}
 
     function post(address recipient, string memory uri) public onlyOwner returns (uint256) {
         uint256 postId = ++_nextPostId;
@@ -81,5 +84,17 @@ contract PostStorage is ERC721URIStorage, Ownable {
     function _setTokenURI(uint256 tokenId, string memory newTokenURI) internal override {
         super._setTokenURI(tokenId, newTokenURI);
         _postURIs[tokenId] = newTokenURI;
+    }
+
+    function _msgSender() internal view override(Context, ERC2771Context) returns (address sender) {
+        return ERC2771Context._msgSender();
+    }
+
+    function _msgData() internal view override(Context, ERC2771Context) returns (bytes calldata) {
+        return ERC2771Context._msgData();
+    }
+
+    function _contextSuffixLength() internal view override(Context, ERC2771Context) returns (uint256) {
+        return super._contextSuffixLength();
     }
 }
