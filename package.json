@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "compile": "npx hardhat compile",
-    "deploy": "cross-env ENV=local npx hardhat run --network kaia_test",
-    "deploy:prod": "cross-env ENV=prod npx hardhat run --network kaia_test",
+    "deploy": "cross-env ENV=development npx hardhat run --network kaia_test",
+    "deploy:prod": "cross-env ENV=production npx hardhat run --network kaia_test",
     "test": "npx hardhat test",
     "upgrade": "npx hardhat run --network kaia_test"
   },
