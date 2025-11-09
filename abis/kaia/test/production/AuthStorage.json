@@ -1,0 +1,118 @@
+{
+  "abi": [
+    {"inputs": [], "stateMutability": "nonpayable", "type": "constructor"},
+    {
+      "inputs": [{"internalType": "address", "name": "owner", "type": "address"}],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [{"internalType": "address", "name": "account", "type": "address"}],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {"indexed": true, "internalType": "address", "name": "previousOwner", "type": "address"},
+        {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {"internalType": "address", "name": "recipient", "type": "address"},
+        {"internalType": "enum AuthStorage.Device", "name": "device", "type": "uint8"},
+        {"internalType": "string", "name": "credentialId", "type": "string"},
+        {"internalType": "string", "name": "passkey", "type": "string"}
+      ],
+      "name": "addPasskey",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {"internalType": "address", "name": "recipient", "type": "address"},
+        {"internalType": "enum AuthStorage.Device", "name": "device", "type": "uint8"}
+      ],
+      "name": "deletePasskey",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {"internalType": "address", "name": "recipient", "type": "address"},
+        {"internalType": "enum AuthStorage.Device", "name": "device", "type": "uint8"}
+      ],
+      "name": "getPasskey",
+      "outputs": [
+        {"internalType": "string", "name": "", "type": "string"},
+        {"internalType": "string", "name": "", "type": "string"}
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{"internalType": "address", "name": "recipient", "type": "address"}],
+      "name": "getPasskeys",
+      "outputs": [
+        {
+          "components": [
+            {"internalType": "string", "name": "credentialId", "type": "string"},
+            {"internalType": "string", "name": "credential", "type": "string"}
+          ],
+          "internalType": "struct AuthStorage.Passkey[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getUserAddresses",
+      "outputs": [{"internalType": "address[]", "name": "", "type": "address[]"}],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {"internalType": "address", "name": "recipient", "type": "address"},
+        {"internalType": "string", "name": "_adminCode", "type": "string"},
+        {"internalType": "enum AuthStorage.Device", "name": "device", "type": "uint8"},
+        {"internalType": "string", "name": "credentialId", "type": "string"},
+        {"internalType": "string", "name": "passkey", "type": "string"}
+      ],
+      "name": "registration",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "address": "0x083F15602D632887894c216339EC4D277C77B630"
+}
