@@ -12,6 +12,15 @@ contract AuthStorage is Ownable {
         Desktop
     }
 
+    enum OS {
+        Windows,
+        MacOS,
+        Android,
+        iOS,
+        Linux,
+        Others
+    }
+
     struct User {
         uint256 id;
         string adminCode;
@@ -19,6 +28,7 @@ contract AuthStorage is Ownable {
     }
     struct Passkey {
         Device deviceType;
+        OS osType;
         string credentialId;
         string credential;
     }
@@ -36,6 +46,7 @@ contract AuthStorage is Ownable {
         address recipient,
         string memory _adminCode,
         Device device,
+        OS osType,
         string memory credentialId,
         string memory passkey
     ) public onlyOwner {
@@ -52,13 +63,14 @@ contract AuthStorage is Ownable {
         user.adminCode = _adminCode;
 
         _passkeyCapacities[recipient] = DEFAULT_PASSKEY_SLOTS;
-        _setPasskey(recipient, device, credentialId, passkey);
+        _setPasskey(recipient, device, osType, credentialId, passkey);
         _userAddresses.push(recipient);
     }
 
     function addPasskey(
         address recipient,
         Device device,
+        OS osType,
         string memory credentialId,
         string memory passkey
     ) public onlyOwner {
@@ -70,7 +82,7 @@ contract AuthStorage is Ownable {
         require(user.id != 0, "AuthStorage: user not registered");
         require(_passkeys[recipient].length < _passkeyCapacities[recipient], "AuthStorage: no free slots");
 
-        _setPasskey(recipient, device, credentialId, passkey);
+        _setPasskey(recipient, device, osType, credentialId, passkey);
     }
 
     function grantPasskeySlot(address recipient, uint256 amount) public onlyOwner {
@@ -96,6 +108,8 @@ contract AuthStorage is Ownable {
     function updatePasskey(
         address recipient,
         uint256 index,
+        Device device,
+        OS osType,
         string memory credentialId,
         string memory passkey
     ) public onlyOwner {
@@ -106,6 +120,8 @@ contract AuthStorage is Ownable {
         require(bytes(passkey).length != 0, "AuthStorage: credential required");
 
         Passkey storage slot = _passkeys[recipient][index];
+        slot.deviceType = device;
+        slot.osType = osType;
         slot.credentialId = credentialId;
         slot.credential = passkey;
     }
@@ -147,10 +163,12 @@ contract AuthStorage is Ownable {
     function _setPasskey(
         address recipient,
         Device device,
+        OS osType,
         string memory _credentialId,
         string memory credential
     ) internal {
-        Passkey memory passkey = Passkey({deviceType: device, credentialId: _credentialId, credential: credential});
+        Passkey memory passkey =
+            Passkey({deviceType: device, osType: osType, credentialId: _credentialId, credential: credential});
         _passkeys[recipient].push(passkey);
     }
 }

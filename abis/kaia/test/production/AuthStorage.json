@@ -24,6 +24,7 @@
       "inputs": [
         {"internalType": "address", "name": "recipient", "type": "address"},
         {"internalType": "enum AuthStorage.Device", "name": "device", "type": "uint8"},
+        {"internalType": "enum AuthStorage.OS", "name": "osType", "type": "uint8"},
         {"internalType": "string", "name": "credentialId", "type": "string"},
         {"internalType": "string", "name": "passkey", "type": "string"}
       ],
@@ -52,6 +53,7 @@
         {
           "components": [
             {"internalType": "enum AuthStorage.Device", "name": "deviceType", "type": "uint8"},
+            {"internalType": "enum AuthStorage.OS", "name": "osType", "type": "uint8"},
             {"internalType": "string", "name": "credentialId", "type": "string"},
             {"internalType": "string", "name": "credential", "type": "string"}
           ],
@@ -80,6 +82,7 @@
         {
           "components": [
             {"internalType": "enum AuthStorage.Device", "name": "deviceType", "type": "uint8"},
+            {"internalType": "enum AuthStorage.OS", "name": "osType", "type": "uint8"},
             {"internalType": "string", "name": "credentialId", "type": "string"},
             {"internalType": "string", "name": "credential", "type": "string"}
           ],
@@ -120,6 +123,7 @@
         {"internalType": "address", "name": "recipient", "type": "address"},
         {"internalType": "string", "name": "_adminCode", "type": "string"},
         {"internalType": "enum AuthStorage.Device", "name": "device", "type": "uint8"},
+        {"internalType": "enum AuthStorage.OS", "name": "osType", "type": "uint8"},
         {"internalType": "string", "name": "credentialId", "type": "string"},
         {"internalType": "string", "name": "passkey", "type": "string"}
       ],
@@ -146,6 +150,8 @@
       "inputs": [
         {"internalType": "address", "name": "recipient", "type": "address"},
         {"internalType": "uint256", "name": "index", "type": "uint256"},
+        {"internalType": "enum AuthStorage.Device", "name": "device", "type": "uint8"},
+        {"internalType": "enum AuthStorage.OS", "name": "osType", "type": "uint8"},
         {"internalType": "string", "name": "credentialId", "type": "string"},
         {"internalType": "string", "name": "passkey", "type": "string"}
       ],
@@ -155,5 +161,5 @@
       "type": "function"
     }
   ],
-  "address": "0x50A8ff729020429C5Fa35D5643f7381aA768A88B"
+  "address": "0x0F5cA16DcfbabCe8578e37e791F63F6d7D9551ae"
 }
