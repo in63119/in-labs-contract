@@ -4,10 +4,7 @@ pragma solidity ^0.8.28;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract AuthStorage is Ownable {
-    /**
-        AuthStorage :
-            - 유저당 각 Device 별로 하나의 패스키(총 3개)를 등록
-    */
+    uint256 private constant DEFAULT_PASSKEY_SLOTS = 3;
 
     enum Device {
         Mobile,
@@ -21,6 +18,7 @@ contract AuthStorage is Ownable {
         uint256 createdAt;
     }
     struct Passkey {
+        Device deviceType;
         string credentialId;
         string credential;
     }
@@ -29,7 +27,8 @@ contract AuthStorage is Ownable {
     address[] private _userAddresses;
 
     mapping(address => User) private _users;
-    mapping(address => mapping(Device => Passkey)) private _passkeys;
+    mapping(address => Passkey[]) private _passkeys;
+    mapping(address => uint256) private _passkeyCapacities;
 
     constructor() Ownable(msg.sender) {}
 
@@ -52,6 +51,7 @@ contract AuthStorage is Ownable {
         user.createdAt = block.timestamp;
         user.adminCode = _adminCode;
 
+        _passkeyCapacities[recipient] = DEFAULT_PASSKEY_SLOTS;
         _setPasskey(recipient, device, credentialId, passkey);
         _userAddresses.push(recipient);
     }
@@ -66,40 +66,74 @@ contract AuthStorage is Ownable {
         require(bytes(credentialId).length != 0, "AuthStorage: credentialId required");
         require(bytes(passkey).length != 0, "AuthStorage: credential required");
 
-        require(_users[recipient].id != 0, "AuthStorage: user not registered");
+        User storage user = _users[recipient];
+        require(user.id != 0, "AuthStorage: user not registered");
+        require(_passkeys[recipient].length < _passkeyCapacities[recipient], "AuthStorage: no free slots");
 
         _setPasskey(recipient, device, credentialId, passkey);
     }
 
-    function deletePasskey(address recipient, Device device) public onlyOwner {
+    function grantPasskeySlot(address recipient, uint256 amount) public onlyOwner {
         require(recipient != address(0), "AuthStorage: invalid recipient");
         require(_users[recipient].id != 0, "AuthStorage: user not registered");
+        require(amount > 0, "AuthStorage: amount required");
 
-        delete _passkeys[recipient][device];
+        _passkeyCapacities[recipient] += amount;
+    }
+
+    function deletePasskey(address recipient, uint256 index) public onlyOwner {
+        require(recipient != address(0), "AuthStorage: invalid recipient");
+        require(_users[recipient].id != 0, "AuthStorage: user not registered");
+        require(index < _passkeys[recipient].length, "AuthStorage: invalid index");
+
+        uint256 lastIndex = _passkeys[recipient].length - 1;
+        if (index != lastIndex) {
+            _passkeys[recipient][index] = _passkeys[recipient][lastIndex];
+        }
+        _passkeys[recipient].pop();
+    }
+
+    function updatePasskey(
+        address recipient,
+        uint256 index,
+        string memory credentialId,
+        string memory passkey
+    ) public onlyOwner {
+        require(recipient != address(0), "AuthStorage: invalid recipient");
+        require(_users[recipient].id != 0, "AuthStorage: user not registered");
+        require(index < _passkeys[recipient].length, "AuthStorage: invalid index");
+        require(bytes(credentialId).length != 0, "AuthStorage: credentialId required");
+        require(bytes(passkey).length != 0, "AuthStorage: credential required");
+
+        Passkey storage slot = _passkeys[recipient][index];
+        slot.credentialId = credentialId;
+        slot.credential = passkey;
     }
 
     /**
         Getter(Viewer)
      */
 
-    function getPasskey(address recipient, Device device) public view onlyOwner returns (string memory, string memory) {
-        Passkey storage passkey = _passkeys[recipient][device];
-        return (passkey.credentialId, passkey.credential);
+    function getPasskey(address recipient, uint256 index) public view onlyOwner returns (Passkey memory) {
+        require(recipient != address(0), "AuthStorage: invalid recipient");
+        require(_users[recipient].id != 0, "AuthStorage: user not registered");
+        require(index < _passkeys[recipient].length, "AuthStorage: invalid index");
+
+        return _passkeys[recipient][index];
     }
 
     function getPasskeys(address recipient) public view onlyOwner returns (Passkey[] memory) {
         require(recipient != address(0), "AuthStorage: invalid recipient");
         require(_users[recipient].id != 0, "AuthStorage: user not registered");
 
-        uint256 deviceCount = uint256(type(Device).max) + 1;
-        Passkey[] memory passkeys = new Passkey[](deviceCount);
+        return _passkeys[recipient];
+    }
 
-        for (uint256 i = 0; i < deviceCount; i++) {
-            Passkey storage stored = _passkeys[recipient][Device(uint8(i))];
-            passkeys[i] = Passkey({credentialId: stored.credentialId, credential: stored.credential});
-        }
+    function getPasskeyCapacity(address recipient) public view onlyOwner returns (uint256 used, uint256 capacity) {
+        require(recipient != address(0), "AuthStorage: invalid recipient");
+        require(_users[recipient].id != 0, "AuthStorage: user not registered");
 
-        return passkeys;
+        return (_passkeys[recipient].length, _passkeyCapacities[recipient]);
     }
 
     function getUserAddresses() public view onlyOwner returns (address[] memory) {
@@ -116,6 +150,7 @@ contract AuthStorage is Ownable {
         string memory _credentialId,
         string memory credential
     ) internal {
-        _passkeys[recipient][device] = Passkey({credentialId: _credentialId, credential: credential});
+        Passkey memory passkey = Passkey({deviceType: device, credentialId: _credentialId, credential: credential});
+        _passkeys[recipient].push(passkey);
     }
 }
