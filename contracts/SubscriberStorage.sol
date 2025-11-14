@@ -31,7 +31,7 @@ contract SubscriberStorage is Ownable {
 
     /* ========== Setter Functions ========== */
 
-    function savePinCode(address account, string calldata pinCode) external onlyOwner {
+    function claimPinCode(address account, string calldata pinCode) external onlyOwner {
         _setPinCode(account, pinCode);
     }
 

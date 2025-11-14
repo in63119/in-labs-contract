@@ -78,6 +78,16 @@
         {"internalType": "address", "name": "account", "type": "address"},
         {"internalType": "string", "name": "pinCode", "type": "string"}
       ],
+      "name": "claimPinCode",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {"internalType": "address", "name": "account", "type": "address"},
+        {"internalType": "string", "name": "pinCode", "type": "string"}
+      ],
       "name": "clearPinCode",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -145,16 +155,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {"internalType": "address", "name": "account", "type": "address"},
-        {"internalType": "string", "name": "pinCode", "type": "string"}
-      ],
-      "name": "savePinCode",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}],
       "name": "transferOwnership",
       "outputs": [],
@@ -162,5 +162,5 @@
       "type": "function"
     }
   ],
-  "address": "0xe1b742C8814E38AAE2bd389C927A6ec4e1c47d56"
+  "address": "0xBE0ff99165A943ab37Afe49a3e4d25D6F7137be3"
 }
