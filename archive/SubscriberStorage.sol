@@ -2,7 +2,6 @@
 pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./RelayerManager.sol";
 
 contract SubscriberStorage is Ownable {
     struct PinRecord {
@@ -19,7 +18,6 @@ contract SubscriberStorage is Ownable {
 
     uint64 private constant PIN_TTL = 10 minutes;
 
-    RelayerManager public relayerManager;
     mapping(address => mapping(bytes32 => PinRecord)) private _pins;
     mapping(address => string[]) private _subscriberEmails;
     mapping(address => mapping(bytes32 => bool)) private _subscriberEmailExists;
@@ -28,36 +26,24 @@ contract SubscriberStorage is Ownable {
     event PinCodeCleared(address indexed account, string pinCode);
     event SubscriberEmailAdded(address indexed account, string email);
     event SubscriberEmailRemoved(address indexed account, string email);
-    event RelayerManagerUpdated(address indexed relayerManager);
 
-    constructor(address relayerManager_) Ownable(msg.sender) {
-        _setRelayerManager(relayerManager_);
-    }
-
-    modifier onlyRelayer() {
-        relayerManager.assertReadyRelayer(msg.sender);
-        _;
-    }
+    constructor() Ownable(msg.sender) {}
 
     /* ========== Setter Functions ========== */
 
-    function setRelayerManager(address relayerManager_) external onlyOwner {
-        _setRelayerManager(relayerManager_);
-    }
-
-    function claimPinCode(address account, string calldata pinCode) external onlyRelayer {
+    function claimPinCode(address account, string calldata pinCode) external onlyOwner {
         _setPinCode(account, pinCode);
     }
 
-    function clearPinCode(address account, string calldata pinCode) external onlyRelayer {
+    function clearPinCode(address account, string calldata pinCode) external onlyOwner {
         _clearPinCode(account, pinCode);
     }
 
-    function addSubscriberEmail(address account, string calldata subscriberEmail) external onlyRelayer {
+    function addSubscriberEmail(address account, string calldata subscriberEmail) external onlyOwner {
         _addSubscriberEmail(account, subscriberEmail);
     }
 
-    function removeSubscriberEmail(address account, string calldata subscriberEmail) external onlyRelayer {
+    function removeSubscriberEmail(address account, string calldata subscriberEmail) external onlyOwner {
         _removeSubscriberEmail(account, subscriberEmail);
     }
 
@@ -81,7 +67,7 @@ contract SubscriberStorage is Ownable {
         return block.timestamp <= record.expiresAt;
     }
 
-    function getSubscriberEmails(address account) external view onlyOwner returns (string[] memory) {
+    function getSubscriberEmails(address account) external view returns (string[] memory) {
         if (account == address(0)) revert SubscriberStorage__InvalidAccount();
         return _subscriberEmails[account];
     }
@@ -154,11 +140,5 @@ contract SubscriberStorage is Ownable {
 
     function _validateSubscriberEmail(string calldata subscriberEmail) private pure {
         if (bytes(subscriberEmail).length == 0) revert SubscriberStorage__InvalidSubscriberEmail();
-    }
-
-    function _setRelayerManager(address relayerManager_) private {
-        require(relayerManager_ != address(0), "SubscriberStorage: invalid RelayerManager");
-        relayerManager = RelayerManager(relayerManager_);
-        emit RelayerManagerUpdated(relayerManager_);
     }
 }

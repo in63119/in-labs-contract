@@ -1,6 +1,10 @@
 {
   "abi": [
-    {"inputs": [], "stateMutability": "nonpayable", "type": "constructor"},
+    {
+      "inputs": [{"internalType": "address", "name": "relayerManager_", "type": "address"}],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
     {
       "inputs": [{"internalType": "address", "name": "owner", "type": "address"}],
       "name": "OwnableInvalidOwner",
@@ -43,6 +47,14 @@
         {"indexed": false, "internalType": "uint64", "name": "expiresAt", "type": "uint64"}
       ],
       "name": "PinCodeStored",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {"indexed": true, "internalType": "address", "name": "relayerManager", "type": "address"}
+      ],
+      "name": "RelayerManagerUpdated",
       "type": "event"
     },
     {
@@ -138,6 +150,13 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "relayerManager",
+      "outputs": [{"internalType": "contract RelayerManager", "name": "", "type": "address"}],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {"internalType": "address", "name": "account", "type": "address"},
         {"internalType": "string", "name": "subscriberEmail", "type": "string"}
@@ -155,6 +174,13 @@
       "type": "function"
     },
     {
+      "inputs": [{"internalType": "address", "name": "relayerManager_", "type": "address"}],
+      "name": "setRelayerManager",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}],
       "name": "transferOwnership",
       "outputs": [],
@@ -162,5 +188,5 @@
       "type": "function"
     }
   ],
-  "address": "0x4306E2d6f800603a5736e4CAc8D09f186DA55E91"
+  "address": "0xD519f588F4933a8dD00083124ACBAA02247391fa"
 }
