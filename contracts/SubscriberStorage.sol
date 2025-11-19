@@ -63,7 +63,7 @@ contract SubscriberStorage is Ownable {
 
     /* ========== Getter Functions ========== */
 
-    function getPinCode(address account, string calldata pinCode) external view onlyOwner returns (PinRecord memory) {
+    function getPinCode(address account, string calldata pinCode) external view onlyRelayer returns (PinRecord memory) {
         if (account == address(0)) revert SubscriberStorage__InvalidAccount();
         bytes32 pinKey = keccak256(bytes(pinCode));
         PinRecord memory record = _pins[account][pinKey];
@@ -71,7 +71,7 @@ contract SubscriberStorage is Ownable {
         return record;
     }
 
-    function isPinCodeActive(address account, string calldata pinCode) external view onlyOwner returns (bool) {
+    function isPinCodeActive(address account, string calldata pinCode) external view onlyRelayer returns (bool) {
         if (account == address(0)) revert SubscriberStorage__InvalidAccount();
         bytes32 pinKey = keccak256(bytes(pinCode));
         PinRecord storage record = _pins[account][pinKey];
@@ -81,7 +81,7 @@ contract SubscriberStorage is Ownable {
         return block.timestamp <= record.expiresAt;
     }
 
-    function getSubscriberEmails(address account) external view onlyOwner returns (string[] memory) {
+    function getSubscriberEmails(address account) external view onlyRelayer returns (string[] memory) {
         if (account == address(0)) revert SubscriberStorage__InvalidAccount();
         return _subscriberEmails[account];
     }
