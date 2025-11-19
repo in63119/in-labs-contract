@@ -35,7 +35,7 @@ contract SubscriberStorage is Ownable {
     }
 
     modifier onlyRelayer() {
-        relayerManager.assertReadyRelayer(msg.sender);
+        relayerManager.assertRelayer(msg.sender);
         _;
     }
 
