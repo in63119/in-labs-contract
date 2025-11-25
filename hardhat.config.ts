@@ -11,7 +11,13 @@ const accounts = [
 ];
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.28",
+  solidity: {
+    version: "0.8.28",
+    settings: {
+      optimizer: {enabled: true, runs: 200},
+      viaIR: true,
+    },
+  },
   networks: {
     kaia_test: {
       url: "https://public-en-kairos.node.kaia.io",
