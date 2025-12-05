@@ -6,7 +6,9 @@
     "deploy": "cross-env ENV=development npx hardhat run --network kaia_test",
     "deploy:prod": "cross-env ENV=production npx hardhat run --network kaia_test",
     "test": "npx hardhat test",
-    "upgrade": "npx hardhat run --network kaia_test"
+    "upgrade": "npx hardhat run --network kaia_test",
+    "dev": "cross-env ENV=development ts-node",
+    "prod": "cross-env ENV=production ts-node"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
