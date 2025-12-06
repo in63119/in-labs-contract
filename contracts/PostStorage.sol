@@ -72,11 +72,24 @@ contract PostStorage is ERC721URIStorage, Ownable, ERC2771Context {
 
     function getPosts(address owner) external view returns (Post[] memory posts) {
         uint256 length = _ownedPostIds[owner].length();
-        posts = new Post[](length);
+        uint256 liveCount;
 
         for (uint256 i = 0; i < length; i++) {
             uint256 postId = _ownedPostIds[owner].at(i);
-            posts[i] = Post({id: postId, uri: postURI(postId)});
+            if (_ownerOf(postId) == owner) {
+                liveCount++;
+            }
+        }
+
+        posts = new Post[](liveCount);
+        uint256 cursor;
+
+        for (uint256 i = 0; i < length; i++) {
+            uint256 postId = _ownedPostIds[owner].at(i);
+            if (_ownerOf(postId) == owner) {
+                posts[cursor] = Post({id: postId, uri: postURI(postId)});
+                cursor++;
+            }
         }
     }
 
